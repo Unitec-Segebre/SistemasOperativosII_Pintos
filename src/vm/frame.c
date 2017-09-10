@@ -171,6 +171,7 @@ vm_frame_do_free (void *kpage, bool free_page)
 
 /** Frame Eviction Strategy : The Clock Algorithm */
 struct frame_table_entry* clock_frame_next(void);
+struct frame_table_entry* fifo_next(void);/////////////////////////////////Segebre///////////////////////////////////////////////
 struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
 {
   size_t n = hash_size(&frame_map);
@@ -179,7 +180,8 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
   size_t it;
   for(it = 0; it <= n + n; ++ it) // prevent infinite loop. 2n iterations is enough
   {
-    struct frame_table_entry *e = clock_frame_next();
+    // struct frame_table_entry *e = clock_frame_next();
+    struct frame_table_entry *e = fifo_next();
     // if pinned, continue
     if(e->pinned) continue;
     // if referenced, give a second chance.
@@ -253,4 +255,20 @@ static bool frame_less_func(const struct hash_elem *a, const struct hash_elem *b
   struct frame_table_entry *a_entry = hash_entry(a, struct frame_table_entry, helem);
   struct frame_table_entry *b_entry = hash_entry(b, struct frame_table_entry, helem);
   return a_entry->kpage < b_entry->kpage;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////My Functions/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct frame_table_entry* fifo_next(void)
+{
+  if (list_empty(&frame_list))
+    PANIC("Frame table is empty, can't happen - there is a leak somewhere");
+
+  // static struct list_elem *pop_ptr = list_front(&frame_list);
+
+  struct frame_table_entry *e = list_entry(list_front(&frame_list), struct frame_table_entry, lelem);
+  return e;
 }
