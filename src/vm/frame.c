@@ -171,7 +171,7 @@ vm_frame_do_free (void *kpage, bool free_page)
 
 /** Frame Eviction Strategy : The Clock Algorithm */
 struct frame_table_entry* clock_frame_next(void);
-struct frame_table_entry* fifo_next(void);/////////////////////////////////Segebre///////////////////////////////////////////////
+struct frame_table_entry* fifo_next(void);//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
 struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
 {
   size_t n = hash_size(&frame_map);
@@ -189,6 +189,8 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
       pagedir_set_accessed(pagedir, e->upage, false);
       continue;
     }
+
+     thread_current()->page_fault_count++;//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
 
     // OK, here is the victim : unreferenced since its last chance
     return e;

@@ -110,6 +110,9 @@ thread_init (void)
   initial_thread->status = THREAD_RUNNING;
   initial_thread->tid = allocate_tid ();
   initial_thread->sleep_endtick = 0; // a dummy value
+
+  //Juan Enrique Segebre
+  initial_thread->page_fault_count = 0;
 }
 
 /* Starts preemptive thread scheduling by enabling interrupts.
