@@ -180,8 +180,13 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
   size_t it;
   for(it = 0; it <= n + n; ++ it) // prevent infinite loop. 2n iterations is enough
   {
-    // struct frame_table_entry *e = clock_frame_next();
+    #ifdef CLOCKLRU
+    struct frame_table_entry *e = clock_frame_next();
+    #endif
+
+    #ifndef CLOCKLRU
     struct frame_table_entry *e = fifo_next();
+    #endif
     // if pinned, continue
     if(e->pinned) continue;
     // if referenced, give a second chance.
@@ -277,6 +282,7 @@ frame_table_entry* fifo_next(void)
 void
 vm_update_frame_list(void* kpage)
 {
+  #ifdef LRU
   for(struct list_elem* i = list_front(&frame_list); i != list_end(&frame_list); i = list_next(i))
   {
     if(((struct frame_table_entry*)i)->kpage == kpage)
@@ -286,5 +292,6 @@ vm_update_frame_list(void* kpage)
       break;
     }
   }
+  #endif
   // printf("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\nbegining: %d, end: %d\nfront: %d, back: %d\nHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n", list_begin(&frame_list), list_end(&frame_list), list_front(&frame_list), list_next(list_back(&frame_list)));
 }

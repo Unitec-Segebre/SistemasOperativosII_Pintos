@@ -153,7 +153,7 @@ page_fault (struct intr_frame *f)
   page_fault_cnt++;
 
   thread_current()->page_fault_count++;//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
-  // exception_print_stats();
+  exception_print_stats();
 
   /* Determine cause. */
   not_present = (f->error_code & PF_P) == 0;
