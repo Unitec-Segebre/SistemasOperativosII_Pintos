@@ -200,6 +200,7 @@ vm_load_page(struct supplemental_page_table *supt, uint32_t *pagedir, void *upag
 
   if(spte->status == ON_FRAME) {
     // already loaded
+    vm_update_frame_list(spte->kpage);//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
     return true;
   }
 

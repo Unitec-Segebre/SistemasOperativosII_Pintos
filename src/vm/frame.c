@@ -262,7 +262,8 @@ static bool frame_less_func(const struct hash_elem *a, const struct hash_elem *b
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////My Functions/////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct frame_table_entry* fifo_next(void)
+struct
+frame_table_entry* fifo_next(void)
 {
   if (list_empty(&frame_list))
     PANIC("Frame table is empty, can't happen - there is a leak somewhere");
@@ -271,4 +272,19 @@ struct frame_table_entry* fifo_next(void)
 
   struct frame_table_entry *e = list_entry(list_front(&frame_list), struct frame_table_entry, lelem);
   return e;
+}
+
+void
+vm_update_frame_list(void* kpage)
+{
+  for(struct list_elem* i = list_front(&frame_list); i != list_end(&frame_list); i = list_next(i))
+  {
+    if(((struct frame_table_entry*)i)->kpage == kpage)
+    {
+      list_remove(i);
+      list_push_back(&frame_list, i);
+      break;
+    }
+  }
+  // printf("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\nbegining: %d, end: %d\nfront: %d, back: %d\nHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n", list_begin(&frame_list), list_end(&frame_list), list_front(&frame_list), list_next(list_back(&frame_list)));
 }
