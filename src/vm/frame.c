@@ -177,16 +177,17 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
   size_t n = hash_size(&frame_map);
   if(n == 0) PANIC("Frame table is empty, can't happen - there is a leak somewhere");
 
+  #ifndef CLOCKLRU
+    struct frame_table_entry *e = fifo_next();
+    return e;
+  #endif
+
+  #ifdef CLOCKLRU
   size_t it;
   for(it = 0; it <= n + n; ++ it) // prevent infinite loop. 2n iterations is enough
   {
-    #ifdef CLOCKLRU
     struct frame_table_entry *e = clock_frame_next();
-    #endif
 
-    #ifndef CLOCKLRU
-    struct frame_table_entry *e = fifo_next();
-    #endif
     // if pinned, continue
     if(e->pinned) continue;
     // if referenced, give a second chance.
@@ -198,6 +199,7 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
     // OK, here is the victim : unreferenced since its last chance
     return e;
   }
+  #endif
 
   PANIC ("Can't evict any frame -- Not enough memory!\n");
 }
