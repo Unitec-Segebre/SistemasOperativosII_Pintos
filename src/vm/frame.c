@@ -190,8 +190,6 @@ struct frame_table_entry* pick_frame_to_evict( uint32_t *pagedir )
       continue;
     }
 
-     thread_current()->page_fault_count++;//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
-
     // OK, here is the victim : unreferenced since its last chance
     return e;
   }

@@ -130,10 +130,10 @@ struct thread
 
     // Project 3: Memory Mapped Files.
     struct list mmap_list;              /* List of struct mmap_desc. */
+#endif
 
     //Juan Enrique Segebre
     uint32_t page_fault_count;
-#endif
 
     // Project 4: CWD.
     struct dir *cwd;
