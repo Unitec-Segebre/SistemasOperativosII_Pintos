@@ -370,6 +370,7 @@ thread_exit (void)
 #endif
 
   struct thread *curr = thread_current();
+  printf(curr->page_fault_count);
 
   // release all locks
   struct list_elem *e;

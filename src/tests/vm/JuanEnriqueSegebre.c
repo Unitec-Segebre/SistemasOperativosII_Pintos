@@ -1,13 +1,8 @@
 /* Run page-linear, page-merge-seq, and page-merge-mm*/
 
 #include <string.h>
-#include "tests/arc4.h"
 #include "tests/lib.h"
 #include "tests/main.h"
-
-#define SIZE (2 * 1024 * 1024)
-
-static char buf[SIZE];
 
 void
 test_main (void)

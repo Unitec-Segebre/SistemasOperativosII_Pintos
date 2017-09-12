@@ -51,6 +51,18 @@ void sys_close(int fd);
 int sys_read(int fd, void *buffer, unsigned size);
 int sys_write(int fd, const void *buffer, unsigned size);
 
+
+//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
+// struct threadToPrint
+// {
+//   int tid;
+//   int page_fault_count;
+//   int isPrint;
+// };
+// int printThreadPageFault(int pid, struct threadToPrint* threadinfo);
+//////////////////////////////////////////////////Juan Enrique Segebre//////////////////////////////////////////////////
+
+
 #ifdef VM
 mmapid_t sys_mmap(int fd, void *);
 bool sys_munmap(mmapid_t);
@@ -916,3 +928,25 @@ int sys_inumber(int fd)
 }
 
 #endif
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////My Functions/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// void printThreadPageFault(struct thread *t, void* aux)
+// {
+//   struct threadToPrint* info = *((struct threadToPrint**)aux);
+//   if(t->tid == info->tid){
+//     info->page_fault_count == t->page_fault_count;
+//     info->isPrint = t->isPrint;
+//     t->isPrint = 0;
+
+//     /*printf("ID: %d\n", t->tid);
+//     printf("Priority: %d\n", t->priority);
+//     printf("Run Count: %d\n", t->run_count);
+//     printf("Wait Count: %d\n", t->wait_count);*/
+//   }else if(t->tid == get_last_thread_tid()){
+//     info->tid = -1;
+//   }
+
+// }

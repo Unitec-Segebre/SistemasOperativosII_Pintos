@@ -97,6 +97,9 @@ struct thread
     struct list_elem waitelem;          /* List element, stored in the wait_list queue */
     int64_t sleep_endtick;              /* The tick after which the thread should awake (if the thread is in sleep) */
 
+    //Juan Enrique Segebre
+    uint32_t page_fault_count;
+
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element, stored in the ready_list queue */
 
@@ -131,9 +134,6 @@ struct thread
     // Project 3: Memory Mapped Files.
     struct list mmap_list;              /* List of struct mmap_desc. */
 #endif
-
-    //Juan Enrique Segebre
-    uint32_t page_fault_count;
 
     // Project 4: CWD.
     struct dir *cwd;
